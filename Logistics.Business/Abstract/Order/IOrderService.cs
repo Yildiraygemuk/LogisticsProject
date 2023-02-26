@@ -7,8 +7,8 @@ namespace Logistics.Business
     {
         IDataResult<IQueryable<OrderVm>> GetListQueryableOdata();
         IDataResult<OrderVm> GetById(Guid id);
-        IDataResult<int> Post(OrderDto orderDto);
-        IDataResult<OrderDto> Update(OrderDto orderDto);
+        IDataResult<IQueryable<string>> Post(List<OrderDto> orderDto);
+        IDataResult<StatuDto> Update(StatuDto statuDto);
         IResult Delete(Guid id);
     }
 }

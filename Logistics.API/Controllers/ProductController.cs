@@ -23,7 +23,7 @@ namespace Logistics.API.Controllers
         [HttpGet("GetList")]
         public IActionResult Get()
         {
-            var result = _productService.GetListQueryableOdata();
+            var result = _productService.GetListQueryable();
             if (result.Success)
             {
                 return Ok(result.Data);

@@ -9,6 +9,7 @@ namespace Logistics.DataAccess
     {
         public override void EntityConfigure(EntityTypeBuilder<Product> builder)
         {
+            builder.Property(x => x.Code).NVarChar(250);
             builder.Property(x => x.Name).NVarChar(250);
         }
     }

@@ -48,15 +48,15 @@ namespace Logistics.API.Controllers
             return BadRequest(result.Message);
         }
         [HttpPost]
-        public IActionResult Post(OrderDto orderDto)
+        public IActionResult Post(List<OrderDto> orderDto)
         {
             var result = _orderService.Post(orderDto);
             return StatusCode(result.StatusCode, result);
         }
-        [HttpPut]
-        public IActionResult Put(OrderDto orderDto)
+        [HttpPut("StatuDto")]
+        public IActionResult StatuDto(StatuDto statuDto)
         {
-            var result = _orderService.Update(orderDto);
+            var result = _orderService.Update(statuDto);
             return StatusCode(result.StatusCode, result);
         }
         [HttpDelete("{id}")]

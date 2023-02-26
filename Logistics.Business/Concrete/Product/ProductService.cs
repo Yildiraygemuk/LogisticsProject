@@ -18,7 +18,7 @@ namespace Logistics.Business
             _productRepository = productRepository;
             _mapper = mapper;
         }
-        public IDataResult<IQueryable<ProductVm>> GetListQueryableOdata()
+        public IDataResult<IQueryable<ProductVm>> GetListQueryable()
         {
             var entityList = _productRepository.GetAll().OrderByDescending(x => x.AddDate);
             var productVmList = _mapper.ProjectTo<ProductVm>(entityList);

@@ -5,7 +5,7 @@ namespace Logistics.Business
 {
     public interface IProductService
     {
-        IDataResult<IQueryable<ProductVm>> GetListQueryableOdata();
+        IDataResult<IQueryable<ProductVm>> GetListQueryable();
         IDataResult<ProductVm> GetById(Guid id);
         IDataResult<ProductDto> Post(ProductDto productDto);
         IDataResult<ProductDto> Update(ProductDto productDto);
