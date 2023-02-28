@@ -1,12 +1,26 @@
-﻿namespace Logistics.Entity
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace Logistics.Entity
 {
     public enum EnumOrderStatus
     {
-        OrderReceived =1,
-        HitTheRoad=3,
-        AtTheDistribution=5,
-        OutForDistribution=7,
-        Delivered=9,
-        Undeliverable=11
+        [Display(Name = "Sipariş Alındı")]
+        OrderReceived = 1,
+
+        [Display(Name = "Yola Çıktı")]
+        HitTheRoad = 3,
+
+        [Display(Name = "Dağıtım Merkezinde")]
+        AtTheDistribution = 5,
+
+        [Display(Name = "Dağıtıma Çıktı")]
+        OutForDistribution = 7,
+
+        [Display(Name = "Teslim Edildi")]
+        Delivered = 9,
+
+        [Display(Name = "Teslim Edilemedi")]
+        Undeliverable = 11
     }
 }

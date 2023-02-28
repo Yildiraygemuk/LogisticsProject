@@ -33,7 +33,8 @@ namespace Logistics.Business
         public IDataResult<ProductDto> Post(ProductDto productDto)
         {
             var addEntity = _mapper.Map<Product>(productDto);
-            _productRepository.Add(addEntity);
+            var result = _productRepository.Add(addEntity);
+            productDto.Id = result.Data.Id;
             return new SuccessDataResult<ProductDto>(productDto);
         }
         public IDataResult<ProductDto> Update(ProductDto productDto)

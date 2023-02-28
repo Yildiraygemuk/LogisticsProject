@@ -39,7 +39,7 @@ namespace Logistics.API.Controllers
 
             if (result.Data == null)
             {
-                throw new NotFoundException(id);
+                return NotFound();
             }
             if (result.Success)
             {

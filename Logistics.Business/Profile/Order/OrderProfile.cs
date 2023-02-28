@@ -7,7 +7,14 @@ namespace Logistics.Business
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderVm>().ReverseMap();
+            CreateMap<Order, OrderVm>()
+                 .ForMember(dest => dest.StatusValue,
+                    act => act.MapFrom(src => EnumHelper<EnumOrderStatus>.GetDisplayValue((EnumOrderStatus)src.Status)))
+                 .ForMember(dest => dest.UnitQuantitiesValue,
+                    act => act.MapFrom(src => EnumHelper<EnumUnitQuantities>.GetDisplayValue((EnumUnitQuantities)src.UnitQuantities)))
+                 .ForMember(dest => dest.UnitWeighValue,
+                    act => act.MapFrom(src => EnumHelper<EnumUnitWeigh>.GetDisplayValue((EnumUnitWeigh)src.UnitWeigh)));
+            CreateMap<OrderVm, Order>();
             CreateMap<Order, OrderDto>();
             CreateMap<Order, StatuDto>().ReverseMap();
             CreateMap<OrderDto, Order>()

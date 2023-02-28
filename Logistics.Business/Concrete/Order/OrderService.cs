@@ -79,7 +79,7 @@ namespace Logistics.Business
                 var errorOrderNos = orderDto.Select(x => x.OrderNo);
                 var errorMessage = $"{string.Join(", ", errorOrderNos)} sipariş numaraları sistemde kayıtlı olduğu için eklenemedi.";
 
-                if (!orderList.Any())
+                if (orderList.Any())
                     return new ErrorDataResult<IQueryable<string>>(errorOrderNos.AsQueryable(), errorMessage);
 
                 _orderRepository.AddRange(orderList);
