@@ -4,7 +4,11 @@ using Logistics.Core.Entities.Exceptions;
 using Logistics.Core.Utilities.Results;
 using Logistics.DataAccess.Abstract;
 using Logistics.Entity;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Linq;
+using System.Text;
 
 namespace Logistics.Business
 {
@@ -12,12 +16,14 @@ namespace Logistics.Business
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IProductService _productService;
+        private readonly IRabbitMQService _rabbitMQService;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository, IProductService productService, IMapper mapper)
+        public OrderService(IOrderRepository orderRepository, IProductService productService, IRabbitMQService rabbitMQService, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _productService = productService;
+            _rabbitMQService = rabbitMQService;
             _mapper = mapper;
         }
         public IDataResult<IQueryable<OrderVm>> GetListQueryableOdata()
@@ -82,13 +88,14 @@ namespace Logistics.Business
             _orderRepository.AddRange(orderList);
             return new SuccessDataResult<IQueryable<string>>(orderDto.Select(x => x.OrderNo).AsQueryable());
         }
-
         public IDataResult<StatuDto> Update(StatuDto statuDto)
         {
-            var order = _orderRepository.GetAll().FirstOrDefault(x=> x.OrderNo == statuDto.OrderNo);
+            var order = _orderRepository.GetAll().FirstOrDefault(x => x.OrderNo == statuDto.OrderNo);
             if (order == null) { throw new NotFoundException(statuDto.OrderNo); }
             order = _mapper.Map(statuDto, order);
-            _orderRepository.Update(order);
+            var result = _orderRepository.Update(order);
+            if (result.Success)
+                _rabbitMQService.SendToQueue(order);
             return new SuccessDataResult<StatuDto>(statuDto);
         }
         public IResult Delete(Guid id)

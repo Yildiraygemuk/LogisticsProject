@@ -6,6 +6,7 @@ using Logistics.DataAccess;
 using Logistics.DataAccess.Abstract;
 using Logistics.DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Reflection;
 
 IConfiguration Configuration = new ConfigurationBuilder()
@@ -25,8 +26,17 @@ builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IOrderService, OrderService>();
+builder.Services.AddSingleton<IRabbitMQService, RabbitMQService>();
 builder.Services.AddDbContext<LogisticsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnectionString")));
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 var assembly = Assembly.Load("Logistics.Business");
 assemblies.Add(assembly);
